@@ -17,9 +17,6 @@
 
   // --SIDEBAR
   include 'includes/sidebar.php';
-
-  // create instance of CreateDb  class
-  $database = new CreateDb(dbname: "shop", tb1name: "users", tb2name: "products");
   
   // Injection of products
   $products = [
