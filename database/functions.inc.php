@@ -331,6 +331,65 @@ function calculateTotal($conn) {
     }
   
     return $total;
-  }
+}
+
+function displayCartPrice() {
+    if (isset($_SESSION['cart'])) {
+        $count = count($_SESSION['cart']);
+        echo "<h6>Price($count items)</h6>";
+    } else {
+        echo "<h6>Price(0 items)</h6>";
+    }
+}
+
+function displayCheckoutButton() {
+    if (isset($_SESSION['cart'])) {
+        $count = count($_SESSION['cart']);
+        if ($count > 0) {
+            echo '<button class="btn btn-primary mt-3">Checkout</button>';
+        } else {
+            echo '<a href="home.php" class="btn btn-primary mt-3">You need to add products to your cart</a>';
+        }
+    }
+}
+
+  function addToCart($product_id) {
+    if (isset($_SESSION['cart'])) {
+        $item_array_id = array_column($_SESSION['cart'], 'product_id');
+
+        if (in_array($product_id, $item_array_id)) {
+            echo '<script>alert("Product is already in the cart")</script>';
+            echo '<script>window.location = "home.php"</script>';
+        } else {
+            $count = count($_SESSION['cart']);
+            $item_array = array(
+                'product_id' => $product_id
+            );
+
+            $_SESSION['cart'][$count] = $item_array;
+        }
+    } else {
+        $item_array = array(
+            'product_id' => $product_id
+        );
+
+        // Create new session variable
+        $_SESSION['cart'][0] = $item_array;
+    }
+}
 
 
+function removeProductFromCart($id) {
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $key => $value) {
+            if ($value['product_id'] == $id) {
+                unset($_SESSION['cart'][$key]);
+                echo '<script>
+                        alert("Product has been removed!");
+                        window.location = "cart.php";
+                      </script>';
+                break;
+            }
+        }
+    }
+}

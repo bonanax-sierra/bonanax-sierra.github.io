@@ -21,18 +21,9 @@ include 'includes/sidebar.php';
 include 'database/functions.inc.php';
 
 // --REMOVE PRODUCT
-if (isset($_POST['remove'])) {
-  if ($_GET['action'] == 'remove') {
-    foreach ($_SESSION['cart'] as $key => $value) {
-      if ($value['product_id'] == $_GET['id']) {
-        unset($_SESSION['cart'][$key]);
-        echo '<script>
-                alert("Product has been removed!");
-                window.location = "cart.php";
-              </script>';
-      }
-    }
-  }
+if (isset($_POST['remove']) && isset($_GET['action']) && $_GET['action'] == 'remove') {
+  $productId = $_GET['id'];
+  removeProductFromCart($productId);
 }
 ?>
 
@@ -98,12 +89,7 @@ if (isset($_POST['remove'])) {
                               <div class="col-md-6">
 
                                 <?php
-                                if (isset($_SESSION['cart'])) {
-                                  $count = count($_SESSION['cart']);
-                                  echo "<h6>Price($count items)</h6>";
-                                } else {
-                                  echo "<h6>Price(0 items)</h6>";
-                                }
+                                displayCartPrice();
                                 ?>
 
                                 <h6>Delivery</h6>
@@ -128,14 +114,7 @@ if (isset($_POST['remove'])) {
                               </div>
 
                               <?php
-                              if (isset($_SESSION['cart'])) {
-                                $count = count($_SESSION['cart']);
-                                if ($count > 0) {
-                                  echo '<button class="btn btn-primary mt-3">Checkout</button>';
-                                } else {
-                                  echo '<a href="home.php" class="btn btn-primary mt-3">You need to add products to your cart</a>';
-                                }
-                              }
+                              displayCheckoutButton();
                               ?>
 
                             </div>
