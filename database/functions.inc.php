@@ -189,6 +189,32 @@ function loginUser($conn, $username, $password) {
     }
 }
 
+/* Log in or Log out button sidebar */
+function displayLoginOrLogoutLink(){
+    if (isset($_SESSION["id"])) {
+        // User is logged in, display Logout link
+        echo '<li class="nav-item">
+              <a href="database/logout.inc.php" class="nav-link">
+              <i class="nav-icon fas fa fa-sign-out-alt" aria-hidden="true"></i>
+                <span class="sr-only">Loading...</span>
+                <p>
+                  Logout
+                </p>
+              </a>
+            </li>';
+    } else {
+        // User is not logged in, display Sign In link
+        echo '<li class="nav-item">
+              <a href="index.php" class="nav-link">
+              <i class="nav-icon fas fa-sign-in-alt" aria-hidden="true"></i>
+                <p>
+                  Sign In
+                </p>
+              </a>
+            </li>';
+    }
+}
+
 /* PRODUCT */
 function component($productname, $productprice, $productimg, $productid) {
     $element = '

@@ -108,5 +108,4 @@ class CreateDb
             echo "Error $action product: " . mysqli_error($this->conn);
         }
     }
-
 }

@@ -17,6 +17,9 @@
 
   // --SIDEBAR
   include 'includes/sidebar.php';
+
+  // create instance of CreateDb  class
+  $database = new CreateDb(dbname: "shop", tb1name: "users", tb2name: "products");
   
   // Injection of products
   $products = [
@@ -100,35 +103,15 @@
       <div class="content">
         <div class="container">
 
-          <!-- Navigation bar of products -->
-          <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse text-center" id="navbarNav">
-              <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="#laptop">Laptop</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#phone">Phone</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#computer">Computer</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    More
-                  </a>
-                  <div class="dropdown-menu text-center">
-                    <a class="dropdown-item" href="#headset">Headset</a>
-                    <a class="dropdown-item" href="#mcbook">Mcbook</a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </nav>
+          <?php
+          // Check if the user is not logged in
+          if (!isset($_SESSION["id"])) {
+            echo '<div class="alert alert-danger" role="alert">
+                          <h2>Error: Please login to browse the products.</h2>
+                      </div>';
+            exit; // Stop further execution of the page
+          }
+          ?>
 
           <!-- Product display -->
           <div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
@@ -151,9 +134,7 @@
     </div>
   </div>
 
-
-<!-- JAVASCRIPT -->
-<script>
+  <script>
   const starRatings = document.querySelectorAll('.star-rating h6');
 
   starRatings.forEach((rating) => {

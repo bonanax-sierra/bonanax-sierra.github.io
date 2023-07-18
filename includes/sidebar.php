@@ -4,9 +4,10 @@
   padding: 0 0.9rem 0.1rem 0.9rem;
   border-radius: 3rem;
 }
+
 </style>
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column bg-dark">
     <!-- Brand Logo -->
     <a href="home.php" class="brand-link">
       <img src="dist/img/logo.jpg" alt="Online Shopping Logo" class="brand-image img-circle elevation-3" style="opacity: .7">
@@ -76,18 +77,9 @@
             </a>
           </li>
           <?php
-            if (isset($_SESSION["id"])) {
-              echo '<li class="nav-item">
-              <a href="database/logout.inc.php" class="nav-link">
-              <i class="nav-icon fas fa fa-sign-out-alt" aria-hidden="true"></i>
-                <span class="sr-only">Loading...</span>
-                <p>
-                  Logout
-                </p>
-              </a>
-            </li>';
-            }
+          displayLoginOrLogoutLink();
           ?>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
