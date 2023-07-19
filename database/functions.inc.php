@@ -91,6 +91,7 @@ function createUser($conn,$usrname,$full_name,$email,$pass01,$pass02) {
     exit();
 }
 
+<<<<<<< HEAD
 /* CREATE ADMIN */
 function createAdmin($conn,$usrname,$full_name,$email,$pass01,$pass02) {
     $sql = "INSERT INTO admin (username, fullname, email, password) VALUES /* placeholders */(?, ?, ?, ?)";
@@ -201,6 +202,8 @@ function emptyInputLoginAdmin($usrname,$pass01) {
     return $result;
 }
 
+=======
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 /* ERROR MESSAGES */
 function RgstrMsgs() {
     if (isset($_GET['error'])) {
@@ -263,6 +266,7 @@ function LgnMsgs() {
     }
 }
 
+<<<<<<< HEAD
 function AdminMsgs() {
     if(isset($_GET['error'])) {
         if($_GET['error'] == 'emptyinput') {
@@ -285,6 +289,8 @@ function AdminMsgs() {
 
 
 
+=======
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 /* LOGIN FUNCTIONS */
 
 /* Function that echoes to input your account */
@@ -321,6 +327,7 @@ function loginUser($conn, $username, $password) {
     }
 }
 
+<<<<<<< HEAD
 /* Log in or Log out button sidebar */
 function displayLoginOrLogoutLink(){
     if (isset($_SESSION["id"])) {
@@ -349,6 +356,8 @@ function displayLoginOrLogoutLink(){
 
 
 
+=======
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 /* PRODUCT */
 function component($productname, $productprice, $productimg, $productid) {
     $element = '
@@ -447,9 +456,16 @@ function CartItemsMSG() {
               </div>
             </div>';
     }
+<<<<<<< HEAD
 }
 
 function displayCartItems($conn){
+=======
+  }
+
+function displayCartItems($conn)
+{
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
     $total = 0;
     if (isset($_SESSION['cart'])) {
         $product_id = array_column($_SESSION['cart'], "product_id");
@@ -537,6 +553,10 @@ function displayCheckoutButton() {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 function removeProductFromCart($id) {
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $value) {
@@ -551,6 +571,7 @@ function removeProductFromCart($id) {
         }
     }
 }
+<<<<<<< HEAD
 
 
 
@@ -568,3 +589,5 @@ function removeProductFromCart($id) {
 
 
 
+=======
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e

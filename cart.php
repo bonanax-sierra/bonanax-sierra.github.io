@@ -18,7 +18,11 @@ include 'includes/navbar.php';
 include 'includes/sidebar.php';
 
 // --FUNCTIONS 
+<<<<<<< HEAD
 include_once 'database/functions.inc.php';
+=======
+include 'database/functions.inc.php';
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 
 // --REMOVE PRODUCT
 if (isset($_POST['remove']) && isset($_GET['action']) && $_GET['action'] == 'remove') {

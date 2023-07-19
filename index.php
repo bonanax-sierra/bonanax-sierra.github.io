@@ -9,6 +9,7 @@
         include 'database/functions.inc.php';
 
         // create instance of CreateDb  class
+<<<<<<< HEAD
         $database = new CreateDb(dbname: "shop", tb1name: "users", tb2name: "products", tb3name: "admin");
     ?>
 
@@ -45,6 +46,12 @@
     box-shadow: 0 0 0 0 black;
   }
 </style>
+=======
+        $database = new CreateDb(dbname: "shop", tb1name: "users", tb2name: "products");
+    ?>
+
+
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 
 <body class="hold-transition login-page">
     <div class="login-box">
@@ -53,6 +60,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="card shadow" >
+<<<<<<< HEAD
             <div class="card-body login-card-body mt-3" style="border-radius: 20px;">
                 <h6 class="login-box-msg"><b>Sign in</b> to start your session</h6>
 
@@ -61,6 +69,16 @@
                 ?>
                 <form action="database/login.inc.php" method="post">
                     <div class="input-group my-3">
+=======
+            <div class="card-body login-card-body" style="border-radius: 20px;">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                <?php
+                    LgnMsgs();
+                ?>
+                <form action="database/login.inc.php" method="post">
+                    <div class="input-group mb-3">
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
                         <input type="text" name="username" class="form-control" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -68,7 +86,11 @@
                             </div>
                         </div>
                     </div>  
+<<<<<<< HEAD
                     <div class="input-group my-3">
+=======
+                    <div class="input-group mb-3">
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
                         <input type="password" name="pass01" class="form-control" placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -76,7 +98,11 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="row my-3">
+=======
+                    <div class="row">
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
                         <!-- /.col  -->
                         <div class="col-12">
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -84,7 +110,11 @@
                         <!-- /.col -->
                     </div>
                 </form>
+<<<<<<< HEAD
                 <p class="my-2 text-center">
+=======
+                <p class="mb-2 mt-2">
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
                     <a href="register.php" class="text-center">Register a new membership</a>
                 </p>
             </div>
@@ -92,9 +122,12 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <div class="admin-button-container">
         <a class="admin-button" href="adminlogin.php">Admin Login</a>
     </div>
+=======
+>>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 
 </body>
 </html>
