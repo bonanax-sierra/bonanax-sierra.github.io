@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 
-<?php include 'includes/header.php'?>
+<?php include 'includes/header.php' ?>
 
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="card">
             <div class="card-body register-card-body">
                 <h5 class="login-box-msg"><br>Register a new membership</h5>
-                
+
                 <?php /* ERROR MESSAGES*/
-                    include 'database/functions.inc.php';
-                    RgstrMsgs();
+                include 'database/functions.inc.php';
+                RgstrMsgs();
                 ?>
 
                 <form action="database/register.inc.php" method="post">
-                <div class="input-group mb-3">
+                    <div class="input-group mb-3">
                         <input type="text" name="username" class="form-control" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -77,4 +77,5 @@
     </div><!-- /.register-box -->
 
 </body>
+
 </html>

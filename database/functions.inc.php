@@ -91,6 +91,116 @@ function createUser($conn,$usrname,$full_name,$email,$pass01,$pass02) {
     exit();
 }
 
+/* CREATE ADMIN */
+function createAdmin($conn,$usrname,$full_name,$email,$pass01,$pass02) {
+    $sql = "INSERT INTO admin (username, fullname, email, password) VALUES /* placeholders */(?, ?, ?, ?)";
+    $stmt = mysqli_stmt_init($conn);
+
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adminreg.php?error=stmt failed");
+        exit();
+    }
+
+    /* password hashing */
+    $hasedPwd = password_hash($pass01, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "ssss", $usrname, $full_name, $email, $hasedPwd); /* bind variables (verify if the same as the $SQL variable) */
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../adminlogin.php?error=none");
+    exit();
+}
+
+/* Function if the username is not taken */
+function invalidusrnameAdmin($usrname) {
+    $result;
+    if (!preg_match("/^[a-zA-Z0-9]*$/", $usrname)) { /* preg_match is a built in function in php */
+        $result = true;
+    }  else {
+        $result = false;
+    }
+    return $result;
+}
+
+/* Function if the email is valid */
+function invalidemailAdmin($email) {
+    $result;
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $result = true;
+    }else {
+        $result = false;
+    }
+    return $result;
+}
+
+/* Function if the password matches */
+function pwdMatchAdmin($pass01,$pass02) {
+    $result;
+    if($pass01 !== $pass02) {
+        $result = true;
+    }else {
+        $result = false;
+    }
+    return $result;
+}
+
+/* Function if the user exists on the database */
+function usrnameExistAdmin($conn, $usrname, $email) {
+    $sql = "SELECT * FROM admin WHERE username = ? OR email = ?;";
+    $stmt = mysqli_stmt_init($conn);
+
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adminreg.php?error=stmt failed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $usrname, $email);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    } else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+function loginAdmin($conn, $username, $password) {
+    $usernameExists = usrnameExistAdmin($conn, $username, $password);
+
+    if($usernameExists == false) {
+        header("location: ../adminlogin.php?error=wronglogin");
+        exit();
+    }
+
+    $pswHashed = $usernameExists["password"];  
+    $checkpsw = password_verify($password,$pswHashed);
+
+    if($checkpsw === false) {
+        header("location: ../adminlogin.php?error=wronglogin");
+    } elseif ($checkpsw === true) {
+        session_start();
+        $_SESSION["id"] = $usernameExists["id"];
+        $_SESSION["username"] = $usernameExists["username"];
+        header("location: ../dashboard.php?");
+        exit();
+    }
+}
+
+function emptyInputLoginAdmin($usrname,$pass01) {
+    $result;
+    if(empty($usrname) || empty($pass01)) {
+        $result = true;
+    }else {
+        $result = false;
+    }
+    return $result;
+}
+
 /* ERROR MESSAGES */
 function RgstrMsgs() {
     if (isset($_GET['error'])) {
@@ -153,6 +263,28 @@ function LgnMsgs() {
     }
 }
 
+function AdminMsgs() {
+    if(isset($_GET['error'])) {
+        if($_GET['error'] == 'emptyinput') {
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Please enter your account.</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+        } elseif ($_GET['error'] == 'wronglogin') {
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Invalid username or password!</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+        }
+    }
+}
+
+
+
 /* LOGIN FUNCTIONS */
 
 /* Function that echoes to input your account */
@@ -214,6 +346,8 @@ function displayLoginOrLogoutLink(){
             </li>';
     }
 }
+
+
 
 /* PRODUCT */
 function component($productname, $productprice, $productimg, $productid) {
@@ -313,10 +447,9 @@ function CartItemsMSG() {
               </div>
             </div>';
     }
-  }
+}
 
-function displayCartItems($conn)
-{
+function displayCartItems($conn){
     $total = 0;
     if (isset($_SESSION['cart'])) {
         $product_id = array_column($_SESSION['cart'], "product_id");
@@ -404,7 +537,6 @@ function displayCheckoutButton() {
     }
 }
 
-
 function removeProductFromCart($id) {
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $value) {
@@ -419,3 +551,20 @@ function removeProductFromCart($id) {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

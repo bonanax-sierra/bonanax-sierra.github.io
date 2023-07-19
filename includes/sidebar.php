@@ -77,6 +77,7 @@
             </a>
           </li>
           <?php
+          include_once 'database/functions.inc.php';
           displayLoginOrLogoutLink();
           ?>
 

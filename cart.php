@@ -18,7 +18,7 @@ include 'includes/navbar.php';
 include 'includes/sidebar.php';
 
 // --FUNCTIONS 
-include 'database/functions.inc.php';
+include_once 'database/functions.inc.php';
 
 // --REMOVE PRODUCT
 if (isset($_POST['remove']) && isset($_GET['action']) && $_GET['action'] == 'remove') {

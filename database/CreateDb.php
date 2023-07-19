@@ -16,6 +16,7 @@ class CreateDb
         $dbname = "shop",
         $tb1name = "users",
         $tb2name = "products",
+        $tb3name = "admin",
         $servername = "localhost",
         $username = "root",
         $password = ""
@@ -23,6 +24,7 @@ class CreateDb
         $this->dbname = $dbname;
         $this->tb1name = $tb1name;
         $this->tb2name = $tb2name;
+        $this->tb3name = $tb3name;
         $this->servername = $servername;
         $this->username = $username;
         $this->password = $password;
@@ -73,6 +75,22 @@ class CreateDb
             } else {
                 echo "Error creating table $tb1name: " . mysqli_error($this->conn);
             }
+
+            // query to create admin table
+            $sql = "CREATE TABLE IF NOT EXISTS $tb3name (
+                id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(255) NOT NULL,
+                fullname VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL
+            )";
+    
+            if (mysqli_query($this->conn, $sql)) {
+                echo "";
+            } else {
+                echo "Error creating table $tb3name: " . mysqli_error($this->conn);
+            }
+
         } else {
             echo "Error creating database: " . mysqli_error($this->conn);
         }
