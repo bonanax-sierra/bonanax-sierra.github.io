@@ -18,7 +18,3 @@ if(isset($_POST['submit'])) {
 else {
     header("location: ../index.php?");
 }exit();
-<<<<<<< HEAD
-=======
-?>
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e

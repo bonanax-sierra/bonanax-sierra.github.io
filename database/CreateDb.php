@@ -16,10 +16,7 @@ class CreateDb
         $dbname = "shop",
         $tb1name = "users",
         $tb2name = "products",
-<<<<<<< HEAD
         $tb3name = "admin",
-=======
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
         $servername = "localhost",
         $username = "root",
         $password = ""
@@ -27,10 +24,7 @@ class CreateDb
         $this->dbname = $dbname;
         $this->tb1name = $tb1name;
         $this->tb2name = $tb2name;
-<<<<<<< HEAD
         $this->tb3name = $tb3name;
-=======
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
         $this->servername = $servername;
         $this->username = $username;
         $this->password = $password;
@@ -81,7 +75,6 @@ class CreateDb
             } else {
                 echo "Error creating table $tb1name: " . mysqli_error($this->conn);
             }
-<<<<<<< HEAD
 
             // query to create admin table
             $sql = "CREATE TABLE IF NOT EXISTS $tb3name (
@@ -98,8 +91,6 @@ class CreateDb
                 echo "Error creating table $tb3name: " . mysqli_error($this->conn);
             }
 
-=======
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
         } else {
             echo "Error creating database: " . mysqli_error($this->conn);
         }
@@ -135,8 +126,4 @@ class CreateDb
             echo "Error $action product: " . mysqli_error($this->conn);
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 }
