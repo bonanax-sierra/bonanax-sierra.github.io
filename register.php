@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 
-<<<<<<< HEAD
 <?php include 'includes/header.php' ?>
-=======
-<?php include 'includes/header.php'?>
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="card">
             <div class="card-body register-card-body">
                 <h5 class="login-box-msg"><br>Register a new membership</h5>
-<<<<<<< HEAD
 
                 <?php /* ERROR MESSAGES*/
                 include 'database/functions.inc.php';
@@ -20,16 +15,6 @@
 
                 <form action="database/register.inc.php" method="post">
                     <div class="input-group mb-3">
-=======
-                
-                <?php /* ERROR MESSAGES*/
-                    include 'database/functions.inc.php';
-                    RgstrMsgs();
-                ?>
-
-                <form action="database/register.inc.php" method="post">
-                <div class="input-group mb-3">
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
                         <input type="text" name="username" class="form-control" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -92,8 +77,4 @@
     </div><!-- /.register-box -->
 
 </body>
-<<<<<<< HEAD
-
-=======
->>>>>>> 8ce4d42b0f8282e4489ac3328dfd4bff95d28b7e
 </html>
