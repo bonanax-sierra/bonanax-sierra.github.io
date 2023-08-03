@@ -1,100 +1,133 @@
-
 <!DOCTYPE html>
+<html lang="en">
 
-    <?php
-        include 'includes/header.php'; 
+<?php
+// --DATABASE
+require_once 'database/functions.inc.php';
+include 'database/dbcon.inc.php';
+require_once 'database/CreateDb.php';
 
-        include 'database/CreateDb.php';
+// --SESSION
+include 'database/session.inc.php';
 
-        include 'database/functions.inc.php';
+include 'includes/header.php';
 
-        // create instance of CreateDb  class
-        $database = new CreateDb(dbname: "shop", tb1name: "users", tb2name: "products", tb3name: "admin");
-    ?>
+// To store a product into an array and start a session
+if (isset($_POST['add'])) {
+  addToCart($_POST['product_id']);
+}
+?>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Online shopping</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
 
 <style>
-.admin-button-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999; /* To make sure it appears above other elements */
-  }
-
-  .admin-button {
-    background-color: white;
-    color: black;
-    border-radius: 10em;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 0.5em 1em;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    border: 1px solid black;
-    box-shadow: 0 0 0 0 black;
-    text-decoration: none; /* To remove underline */
-    display: inline-block; /* To apply padding properly */
-  }
-
-  .admin-button:hover {
-    transform: translateY(-4px) translateX(-2px);
-    box-shadow: 2px 5px 0 0 black;
-  }
-
-  .admin-button:active {
-    transform: translateY(2px) translateX(1px);
-    box-shadow: 0 0 0 0 black;
-  }
+  .carousel-item img {
+            width: 350px; /* Set your desired width here */
+            height: 350px; /* Let the height adjust automatically to maintain aspect ratio */
+            margin-left: 35%;
+        }
 </style>
 
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <b>Online</b> Shopping
-        </div>
-        <!-- /.login-logo -->
-        <div class="card shadow" >
-            <div class="card-body login-card-body mt-3" style="border-radius: 20px;">
-                <h6 class="login-box-msg"><b>Sign in</b> to start your session</h6>
+<body>
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="#!">Online Shopping</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Shop</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">All Products</a></li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+              <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+            </ul>
+          </li>
+        </ul>
 
-                <?php
-                LgnMsgs();
-                ?>
-                <form action="database/login.inc.php" method="post">
-                    <div class="input-group my-3">
-                        <input type="text" name="username" class="form-control" placeholder="Username">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class="input-group my-3">
-                        <input type="password" name="pass01" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-3">
-                        <!-- /.col  -->
-                        <div class="col-12">
-                            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </form>
-                <p class="my-2 text-center">
-                    <a href="register.php" class="text-center">Register a new membership</a>
-                </p>
-            </div>
-            <!-- /.login-card-body -->
-        </div>
+        <ul class="navbar-nav">
+          <?php
+          displayLoginOrLogoutLink();
+          ?>
+        </ul>
+        <button class="btn btn-outline-dark" type="submit">
+          <a href="cart.php" class="nav-link">
+            <i class="bi-cart-fill me-1"></i>
+            Cart
+            <?php
+            if (isset($_SESSION['cart'])) {
+              $count = count($_SESSION['cart']);
+              echo '<span id="cart_count" class="badge bg-dark text-white ms-1 rounded-pill">' . $count . '</span>';
+            } else {
+              echo '<span id="cart_count" class="badge bg-dark text-white ms-1 rounded-pill">0</span>';
+            }
+            ?>
+          </a>
+        </button>
+
+      </div>
     </div>
+  </nav>
 
-    <div class="admin-button-container">
-        <a class="admin-button" href="adminlogin.php">Admin Login</a>
+  <!-- Header-->
+  <header class="bg-dark py-5">
+  
+  </header>
+  <!-- Section-->
+
+
+  <!-- Product display -->
+  <div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
+    <div class="d-flex flex-wrap justify-content-start">
+      <div class="row mx-3 my-3">
+        <?php
+        $result = GetProduct($conn);
+
+        while ($row = $result->fetch_assoc()) {
+          component($row['product_name'], $row['product_price'], $row['product_img'], $row['id']);
+        }
+
+        ?>
+      </div>
     </div>
+  </div>
 
+
+
+  <!-- Footer-->
+  <?php
+  include_once 'includes/footer.php'
+    ?>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS-->
+  <script src="js/scripts.js"></script>
 </body>
+
 </html>

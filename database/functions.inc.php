@@ -303,7 +303,7 @@ function loginUser($conn, $username, $password) {
     $usernameExists = usrnameExist($conn, $username, $password);
 
     if($usernameExists == false) {
-        header("location: ../index.php?error=wronglogin");
+        header("location: ../login.php?error=wronglogin");
         exit();
     }
 
@@ -311,12 +311,12 @@ function loginUser($conn, $username, $password) {
     $checkpsw = password_verify($password,$pswHashed);
 
     if($checkpsw === false) {
-        header("location: ../index.php?error=wronglogin");
+        header("location: ../login.php?error=wronglogin");
     } elseif ($checkpsw === true) {
         session_start();
         $_SESSION["id"] = $usernameExists["id"];
         $_SESSION["username"] = $usernameExists["username"];
-        header("location: ../home.php?");
+        header("location: ../index.php?");
         exit();
     }
 }
@@ -325,25 +325,12 @@ function loginUser($conn, $username, $password) {
 function displayLoginOrLogoutLink(){
     if (isset($_SESSION["id"])) {
         // User is logged in, display Logout link
-        echo '<li class="nav-item">
-              <a href="database/logout.inc.php" class="nav-link">
-              <i class="nav-icon fas fa fa-sign-out-alt" aria-hidden="true"></i>
-                <span class="sr-only">Loading...</span>
-                <p>
-                  Logout
-                </p>
-              </a>
-            </li>';
+        echo '
+        <li class="nav-item"><a class="nav-link" href="database/logout.inc.php">Log out</a></li>
+        <li class="nav-item mr-2"><a class="nav-link" href="index.php">Account</a></li>';
     } else {
         // User is not logged in, display Sign In link
-        echo '<li class="nav-item">
-              <a href="index.php" class="nav-link">
-              <i class="nav-icon fas fa-sign-in-alt" aria-hidden="true"></i>
-                <p>
-                  Sign In
-                </p>
-              </a>
-            </li>';
+        echo '<li class="nav-item px-3"><a class="nav-link" href="login.php">Sign In</a></li>';
     }
 }
 
@@ -352,37 +339,41 @@ function displayLoginOrLogoutLink(){
 /* PRODUCT */
 function component($productname, $productprice, $productimg, $productid) {
     $element = '
-         <div class="col-lg-4 col-md-6 col-sm-12">
-            <!-- Product_1 -->
-            <div class="card my-3">
-                <form action="" method="post">
-                    <img src="' . $productimg . '" class="card-img-top mt-4 img-fluid" alt="">
-                    <div class="card-body text-center">
-                        <h5>' . $productname . '</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card\'s content.</p>
-                        <div class="star-rating">
-                            <h6 data-rating="0">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </h6>
-                        </div>
-
-                        <h5>
-                            <small><s class="text-secondary">$100</s></small>
-                            <span class="price">' . $productprice . '</span>
-                        </h5>
-                        <button type="submit" name="add" class="btn btn-primary my-3">Add to cart <i class="fas fa-shopping-cart"></i></button>
-                        <input type="hidden" name="product_id" value="'.$productid.'">
-                </form>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3"> 
+        <div class="card py-3 px-3" style="width: 18rem;">
+          <img src="' . $productimg . '" class="card-img-top" alt="Product Image" style="object-fit: cover; height: 200px;">
+          <div class="card-body">
+            <h5 class="card-title">' . $productname . '</h5>
+            <p class="card-text">' . $productprice . '</p>
+            <div>
+              <div class="d-flex justify-content-between">
+                <span>Pro Display XDR</span><span>$5,999</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Pro stand</span><span>$999</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Vesa Mount Adapter</span><span>$199</span>
+              </div>
             </div>
+            <div class="d-flex justify-content-between total font-weight-bold mt-4">
+              <span>Total</span><span>$7,197.00</span>
+            </div>
+            <div class="text-center mt-3">
+              <form action="" method="post">
+                <button type="submit" name="add" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                <input type="hidden" name="product_id" value="' . $productid . '">
+              </form>
+            </div>
+          </div>
         </div>
-        ';
+      </div>
+    ';
+
     echo $element;
 }
+
+
 
 function GetProduct($conn) {
     $query = "SELECT product_name, product_price, product_img, id FROM products";
@@ -430,7 +421,7 @@ function CartItemsMSG() {
                 <div class="row">
                   <div class="col">
                     <div class="alert alert-primary" role="alert">
-                      Your cart is empty <a href="home.php" class="alert-link">Go shopping.</a>.
+                      Your cart is empty <a href="index.php" class="alert-link">Go shopping.</a>.
                     </div>
                   </div>
                 </div>
@@ -441,7 +432,7 @@ function CartItemsMSG() {
               <div class="row">
                 <div class="col">
                   <div class="alert alert-primary" role="alert">
-                    Your cart is empty <a href="home.php" class="alert-link">Go shopping.</a>.
+                    Your cart is empty <a href="index.php" class="alert-link">Go shopping.</a>.
                   </div>
                 </div>
               </div>
@@ -518,7 +509,7 @@ function displayCheckoutButton() {
 
         if (in_array($product_id, $item_array_id)) {
             echo '<script>alert("Product is already in the cart")</script>';
-            echo '<script>window.location = "home.php"</script>';
+            echo '<script>window.location = "index.php"</script>';
         } else {
             $count = count($_SESSION['cart']);
             $item_array = array(

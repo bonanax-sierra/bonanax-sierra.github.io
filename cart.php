@@ -55,7 +55,7 @@ if (isset($_POST['remove']) && isset($_GET['action']) && $_GET['action'] == 'rem
                     <div class="card-body p-4">
                       <div class="row">
                         <div class="col-lg-7">
-                          <h5 class="mb-3"><a href="home.php" class="text-body"><i
+                          <h5 class="mb-3"><a href="index.php" class="text-body"><i
                                 class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
                           <hr>
 
