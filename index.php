@@ -12,10 +12,23 @@ include 'database/session.inc.php';
 
 include 'includes/header.php';
 
-// To store a product into an array and start a session
+// Check if 'add' is set in $_POST
 if (isset($_POST['add'])) {
-  addToCart($_POST['product_id']);
+  // Check if 'user_id' is set in $_SESSION
+  if (isset($_SESSION['id'])) {
+      // User is logged in, proceed to add to cart
+      // Validate and sanitize the 'product_id' if needed
+      $product_id = $_POST['product_id'];
+      // Call the function to add to cart
+      addToCart($product_id);
+  } else {
+      // User is not logged in, show the alert
+      echo "<script>alert('You need to log in first');</script>";
+  }
 }
+
+// To store a product into an array and start a session
+
 ?>
 
 <head>

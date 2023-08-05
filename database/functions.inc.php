@@ -3,55 +3,60 @@
 /* REGISTER FUNCTION */
 
 /* Function if all the forms are not blank */
-function emptyInputSignup($usrname,$full_name,$email,$pass01,$pass02) {
+function emptyInputSignup($usrname, $full_name, $email, $pass01, $pass02)
+{
     $result;
-    if(empty($usrname) || empty($full_name) || empty($email) || empty($pass01) || empty($pass02)) {
+    if (empty($usrname) || empty($full_name) || empty($email) || empty($pass01) || empty($pass02)) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the username is not taken */
-function invalidusrname($usrname) {
+function invalidusrname($usrname)
+{
     $result;
     if (!preg_match("/^[a-zA-Z0-9]*$/", $usrname)) { /* preg_match is a built in function in php */
         $result = true;
-    }  else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the email is valid */
-function invalidemail($email) {
+function invalidemail($email)
+{
     $result;
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the password matches */
-function pwdMatch($pass01,$pass02) {
+function pwdMatch($pass01, $pass02)
+{
     $result;
-    if($pass01 !== $pass02) {
+    if ($pass01 !== $pass02) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the user exists on the database */
-function usrnameExist($conn, $usrname, $email) {
+function usrnameExist($conn, $usrname, $email)
+{
     $sql = "SELECT * FROM users WHERE username = ? OR email = ?;";
     $stmt = mysqli_stmt_init($conn);
 
-    if(!mysqli_stmt_prepare($stmt, $sql)) {
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../register.php?error=stmt failed");
         exit();
     }
@@ -61,9 +66,9 @@ function usrnameExist($conn, $usrname, $email) {
 
     $resultData = mysqli_stmt_get_result($stmt);
 
-    if($row = mysqli_fetch_assoc($resultData)) {
+    if ($row = mysqli_fetch_assoc($resultData)) {
         return $row;
-    }else {
+    } else {
         $result = false;
         return $result;
     }
@@ -72,11 +77,12 @@ function usrnameExist($conn, $usrname, $email) {
 }
 
 /* Function that tells the user that it has created an account */
-function createUser($conn,$usrname,$full_name,$email,$pass01,$pass02) {
+function createUser($conn, $usrname, $full_name, $email, $pass01, $pass02)
+{
     $sql = "INSERT INTO users (username, fullname, email, password) VALUES /* placeholders */(?, ?, ?, ?)";
     $stmt = mysqli_stmt_init($conn);
 
-    if(!mysqli_stmt_prepare($stmt, $sql)) {
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../register.php?error=stmt failed");
         exit();
     }
@@ -92,11 +98,12 @@ function createUser($conn,$usrname,$full_name,$email,$pass01,$pass02) {
 }
 
 /* CREATE ADMIN */
-function createAdmin($conn,$usrname,$full_name,$email,$pass01,$pass02) {
+function createAdmin($conn, $usrname, $full_name, $email, $pass01, $pass02)
+{
     $sql = "INSERT INTO admin (username, fullname, email, password) VALUES /* placeholders */(?, ?, ?, ?)";
     $stmt = mysqli_stmt_init($conn);
 
-    if(!mysqli_stmt_prepare($stmt, $sql)) {
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../adminreg.php?error=stmt failed");
         exit();
     }
@@ -112,40 +119,44 @@ function createAdmin($conn,$usrname,$full_name,$email,$pass01,$pass02) {
 }
 
 /* Function if the username is not taken */
-function invalidusrnameAdmin($usrname) {
+function invalidusrnameAdmin($usrname)
+{
     $result;
     if (!preg_match("/^[a-zA-Z0-9]*$/", $usrname)) { /* preg_match is a built in function in php */
         $result = true;
-    }  else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the email is valid */
-function invalidemailAdmin($email) {
+function invalidemailAdmin($email)
+{
     $result;
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the password matches */
-function pwdMatchAdmin($pass01,$pass02) {
+function pwdMatchAdmin($pass01, $pass02)
+{
     $result;
-    if($pass01 !== $pass02) {
+    if ($pass01 !== $pass02) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function if the user exists on the database */
-function usrnameExistAdmin($conn, $usrname, $email) {
+function usrnameExistAdmin($conn, $usrname, $email)
+{
     $sql = "SELECT * FROM admin WHERE username = ? OR email = ?;";
     $stmt = mysqli_stmt_init($conn);
 
@@ -169,18 +180,19 @@ function usrnameExistAdmin($conn, $usrname, $email) {
     mysqli_stmt_close($stmt);
 }
 
-function loginAdmin($conn, $username, $password) {
+function loginAdmin($conn, $username, $password)
+{
     $usernameExists = usrnameExistAdmin($conn, $username, $password);
 
-    if($usernameExists == false) {
+    if ($usernameExists == false) {
         header("location: ../adminlogin.php?error=wronglogin");
         exit();
     }
 
-    $pswHashed = $usernameExists["password"];  
-    $checkpsw = password_verify($password,$pswHashed);
+    $pswHashed = $usernameExists["password"];
+    $checkpsw = password_verify($password, $pswHashed);
 
-    if($checkpsw === false) {
+    if ($checkpsw === false) {
         header("location: ../adminlogin.php?error=wronglogin");
     } elseif ($checkpsw === true) {
         session_start();
@@ -191,18 +203,20 @@ function loginAdmin($conn, $username, $password) {
     }
 }
 
-function emptyInputLoginAdmin($usrname,$pass01) {
+function emptyInputLoginAdmin($usrname, $pass01)
+{
     $result;
-    if(empty($usrname) || empty($pass01)) {
+    if (empty($usrname) || empty($pass01)) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* ERROR MESSAGES */
-function RgstrMsgs() {
+function RgstrMsgs()
+{
     if (isset($_GET['error'])) {
         if ($_GET['error'] == "emptyinput") {
             echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -211,7 +225,7 @@ function RgstrMsgs() {
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>';
-        } elseif($_GET['error'] == "invalidusername") {
+        } elseif ($_GET['error'] == "invalidusername") {
             echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Invalid username!</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -221,7 +235,7 @@ function RgstrMsgs() {
         } elseif ($_GET['error'] == "invalidemail") {
             echo "<p>Invalid Email</p>";
         } elseif ($_GET['error'] == "passworddontmatch") {
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Password does not match!</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -243,9 +257,10 @@ function RgstrMsgs() {
     }
 }
 
-function LgnMsgs() {
-    if(isset($_GET['error'])) {
-        if($_GET['error'] == 'emptyinput') {
+function LgnMsgs()
+{
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == 'emptyinput') {
             echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>Please enter your account.</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -263,9 +278,10 @@ function LgnMsgs() {
     }
 }
 
-function AdminMsgs() {
-    if(isset($_GET['error'])) {
-        if($_GET['error'] == 'emptyinput') {
+function AdminMsgs()
+{
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == 'emptyinput') {
             echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>Please enter your account.</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -288,29 +304,31 @@ function AdminMsgs() {
 /* LOGIN FUNCTIONS */
 
 /* Function that echoes to input your account */
-function emptyInputLogin($usrname,$pass01) {
+function emptyInputLogin($usrname, $pass01)
+{
     $result;
-    if(empty($usrname) || empty($pass01)) {
+    if (empty($usrname) || empty($pass01)) {
         $result = true;
-    }else {
+    } else {
         $result = false;
     }
     return $result;
 }
 
 /* Function that check if the user input has already an account on the database  */
-function loginUser($conn, $username, $password) {
+function loginUser($conn, $username, $password)
+{
     $usernameExists = usrnameExist($conn, $username, $password);
 
-    if($usernameExists == false) {
+    if ($usernameExists == false) {
         header("location: ../login.php?error=wronglogin");
         exit();
     }
 
-    $pswHashed = $usernameExists["password"];  
-    $checkpsw = password_verify($password,$pswHashed);
+    $pswHashed = $usernameExists["password"];
+    $checkpsw = password_verify($password, $pswHashed);
 
-    if($checkpsw === false) {
+    if ($checkpsw === false) {
         header("location: ../login.php?error=wronglogin");
     } elseif ($checkpsw === true) {
         session_start();
@@ -322,7 +340,8 @@ function loginUser($conn, $username, $password) {
 }
 
 /* Log in or Log out button sidebar */
-function displayLoginOrLogoutLink(){
+function displayLoginOrLogoutLink()
+{
     if (isset($_SESSION["id"])) {
         // User is logged in, display Logout link
         echo '
@@ -337,7 +356,8 @@ function displayLoginOrLogoutLink(){
 
 
 /* PRODUCT */
-function component($productname, $productprice, $productimg, $productid) {
+function component($productname, $productprice, $productimg, $productid)
+{
     $element = '
     <div class="col-md-6 col-lg-4 col-xl-3"> 
         <div class="card py-3 px-3" style="width: 18rem;">
@@ -373,14 +393,14 @@ function component($productname, $productprice, $productimg, $productid) {
     echo $element;
 }
 
-
-
-function GetProduct($conn) {
+function GetProduct($conn)
+{
     $query = "SELECT product_name, product_price, product_img, id FROM products";
     return $conn->query($query);
 }
 
-function cartElement($productname, $productprice, $productimg, $productid) {
+function cartElement($productname, $productprice, $productimg, $productid)
+{
     $element = '
     <div class="card mb-3">
         <div class="card-body">
@@ -411,13 +431,14 @@ function cartElement($productname, $productprice, $productimg, $productid) {
     return $element;
 }
 
-function CartItemsMSG() {
+function CartItemsMSG()
+{
     if (isset($_SESSION['cart'])) {
-      $count = count($_SESSION['cart']);
-      if ($count > 0) {
-        echo 'You have ' . $count . ' item(s) in your cart';
-      } else {
-        echo '<div class="container">
+        $count = count($_SESSION['cart']);
+        if ($count > 0) {
+            echo 'You have ' . $count . ' item(s) in your cart';
+        } else {
+            echo '<div class="container">
                 <div class="row">
                   <div class="col">
                     <div class="alert alert-primary" role="alert">
@@ -426,9 +447,9 @@ function CartItemsMSG() {
                   </div>
                 </div>
               </div>';
-      }
+        }
     } else {
-      echo '<div class="container">
+        echo '<div class="container">
               <div class="row">
                 <div class="col">
                   <div class="alert alert-primary" role="alert">
@@ -440,7 +461,8 @@ function CartItemsMSG() {
     }
 }
 
-function displayCartItems($conn){
+function displayCartItems($conn)
+{
     $total = 0;
     if (isset($_SESSION['cart'])) {
         $product_id = array_column($_SESSION['cart'], "product_id");
@@ -464,26 +486,28 @@ function displayCartItems($conn){
     }
 }
 
-function calculateTotal($conn) {
+function calculateTotal($conn)
+{
     $total = 0;
-  
+
     if (isset($_SESSION['cart'])) {
-      $product_id = array_column($_SESSION['cart'], "product_id");
-      $result = GetProduct($conn); // Assuming GetProduct() is defined and takes $conn as a parameter
-  
-      if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-          if (in_array($row['id'], $product_id)) {
-            $total = $total + (int) $row['product_price'];
-          }
+        $product_id = array_column($_SESSION['cart'], "product_id");
+        $result = GetProduct($conn); // Assuming GetProduct() is defined and takes $conn as a parameter
+
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                if (in_array($row['id'], $product_id)) {
+                    $total = $total + (int) $row['product_price'];
+                }
+            }
         }
-      }
     }
-  
+
     return $total;
 }
 
-function displayCartPrice() {
+function displayCartPrice()
+{
     if (isset($_SESSION['cart'])) {
         $count = count($_SESSION['cart']);
         echo "<h6>Price($count items)</h6>";
@@ -492,7 +516,8 @@ function displayCartPrice() {
     }
 }
 
-function displayCheckoutButton() {
+function displayCheckoutButton()
+{
     if (isset($_SESSION['cart'])) {
         $count = count($_SESSION['cart']);
         if ($count > 0) {
@@ -503,7 +528,8 @@ function displayCheckoutButton() {
     }
 }
 
-  function addToCart($product_id) {
+function addToCart($product_id)
+{
     if (isset($_SESSION['cart'])) {
         $item_array_id = array_column($_SESSION['cart'], 'product_id');
 
@@ -528,7 +554,8 @@ function displayCheckoutButton() {
     }
 }
 
-function removeProductFromCart($id) {
+function removeProductFromCart($id)
+{
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $value) {
             if ($value['product_id'] == $id) {
@@ -542,20 +569,3 @@ function removeProductFromCart($id) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
